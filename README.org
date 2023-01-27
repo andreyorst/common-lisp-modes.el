@@ -1,0 +1,38 @@
+* common-lisp-modes-mode.el
+
+=common-lisp-modes-mode= (=clmm= for short) is a minor mode that can be used to enable functionality that is common across many lisps via a common hook.
+The idea is to set all common features via the =common-lisp-modes-mode-hook= and then enable =common-lisp-modes-mode= in a major mode hook for a given lisp mode.
+For REPL specific features that may not be wanted in source code editing buffers this package also provides a =common-repl-modes-mode=.
+
+Install this package either by using something like [[https://github.com/raxod502/straight.el][straight.el]] or manually putting =region-bindings.el= to your load path.
+Then =require= the package and enable the mode globally, or use =use-package=:
+
+#+begin_src emacs-lisp
+(use-package common-lisp-modes)
+#+end_src
+
+** Usage
+
+One can set [[http://paredit.org/?ref=upstract.com][paredit]] and [[https://gitlab.com/andreyorst/isayt.el][isayt-mode]] to the =common-lisp-modes-mode-hook=, and then turn =common-lisp-modes-mode= in a major mode hook for a given lisp:
+
+#+begin_src emacs-lisp
+(add-hook 'common-lisp-modes-mode-hook 'paredit-mode)
+(add-hook 'common-lisp-modes-mode-hook 'isayt-mode)
+#+end_src
+
+Now these modes can be enabled by simply enabling =clmm=:
+
+#+begin_src emacs-lisp
+(dolist (hook '(common-lisp-mode-hook
+                clojure-mode-hook
+                cider-repl-mode
+                racket-mode-hook
+                eshell-mode-hook
+                eval-expression-minibuffer-setup-hook))
+  (add-hook hook 'common-lisp-modes-mode))
+#+end_src
+
+** Contributing
+
+Please do.
+Read the [[file:CONTRIBUTING.org][contribution guide]] for more information.
