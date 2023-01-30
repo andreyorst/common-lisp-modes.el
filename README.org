@@ -2,7 +2,7 @@
 
 =common-lisp-modes-mode= (=clmm= for short) is a minor mode that can be used to enable functionality that is common across many lisps via a common hook.
 The idea is to set all common features via the =common-lisp-modes-mode-hook= and then enable =common-lisp-modes-mode= in a major mode hook for a given lisp mode.
-For REPL specific features that may not be wanted in source code editing buffers this package also provides a =common-repl-modes-mode=.
+For REPL-specific features that may not be wanted in source code editing buffers, this package also provides a =common-repl-modes-mode=.
 
 Install this package either by using something like [[https://github.com/raxod502/straight.el][straight.el]] or manually putting =region-bindings.el= to your load path.
 Then =require= the package and enable the mode globally, or use =use-package=:
@@ -10,6 +10,14 @@ Then =require= the package and enable the mode globally, or use =use-package=:
 #+begin_src emacs-lisp
 (use-package common-lisp-modes)
 #+end_src
+
+** Rationale
+
+Unfortunately, the =lisp-mode= is made specifically for editing Common Lisp code, so all other lisp modes mostly inherit from =prog-mode=.
+This makes it harder to enable common features, because =prog-mode-hook= is too broad for enabling something like =paredit=, and other lisp-related packages.
+There are also various REPL-related modes that mostly inherit from =comint-mode=, but comint is used for non-lisp stuff as well, which makes the =comint-mode-hook= not feasible as well.
+
+So, instead of repeating all common hooks for every lisp, these can be set as a part of =common-lisp-modes-mode-hook=, and =common-lisp-modes-mode= can be added to a major mode hook instead.
 
 ** Usage
 
@@ -20,7 +28,7 @@ One can set [[http://paredit.org/?ref=upstract.com][paredit]] and [[https://gitl
 (add-hook 'common-lisp-modes-mode-hook 'isayt-mode)
 #+end_src
 
-Now these modes can be enabled by simply enabling =clmm=:
+Now, these modes can be enabled by simply enabling =clmm=:
 
 #+begin_src emacs-lisp
 (dolist (hook '(common-lisp-mode-hook
