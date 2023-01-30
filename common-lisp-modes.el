@@ -5,7 +5,7 @@
 ;; Package-Requires: ((emacs "26.1"))
 ;; Keywords: tools
 ;; Prefix: common-lisp-modes-mode
-;; Version: 0.0.1
+;; Version: 0.0.2
 ;;
 ;; This program is free software: you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -27,14 +27,14 @@
 ;; enable functionality that is common across many lisps via a common
 ;; hook.  The idea is to set all common features via the
 ;; `common-lisp-modes-mode-hook' and then enable
-;; `common-lisp-modes-mode' in a major mode hook for a given lisp
-;; mode.  For REPL specific features that may not be wanted in source
-;; code editing buffers this package also provides a
+;; `common-lisp-modes-mode' in a major mode hook for a given
+;; lisp-related mode.  For REPL-specific features that may not be
+;; wanted in source code editing buffers, this package also provides a
 ;; `common-repl-modes-mode'.
 ;;
 ;;; Rationale:
 ;;
-;; Unfortunately, the `lisp-mode' is made specificaly for editing
+;; Unfortunately, the `lisp-mode' is made specifically for editing
 ;; Common Lisp code, so all other lisp modes mostly inherit from
 ;; `prog-mode'.  This makes it harder to enable common features,
 ;; because `prog-mode-hook' is too broad for enabling something like
@@ -50,7 +50,7 @@
 ;; (add-hook 'common-lisp-modes-mode-hook 'paredit-mode)
 ;; (add-hook 'common-lisp-modes-mode-hook 'isayt-mode)
 ;;
-;; Now these modes can be enabled by simply enabling clmm:
+;; Now, these modes can be enabled by simply enabling clmm:
 ;;
 ;; (dolist (hook '(common-lisp-mode-hook
 ;;                 clojure-mode-hook
@@ -77,20 +77,9 @@ common lisp-modes mode.
 (define-minor-mode common-repl-modes-mode
   "Mode for enabling all modes that are common for REPLs.
 
-\\<common-repl-modes-mode-map>"
-    :lighter " crmm"
-    :keymap (make-sparse-keymap))
-
-;;;###autoload
-(defun common-lisp-modes-indent-or-fill-sexp ()
-  "Indent s-expression or fill string/comment."
-  (interactive)
-  (let ((ppss (syntax-ppss)))
-    (if (or (nth 3 ppss)
-            (nth 4 ppss))
-        (fill-paragraph)
-      (save-excursion
-        (mark-sexp)
-        (indent-region (point) (mark))))))
+ \\<common-repl-modes-mode-map>"
+  :lighter " crmm"
+  :keymap (make-sparse-keymap))
 
 (provide 'common-lisp-modes)
+;;; common-lisp-modes.el ends here
